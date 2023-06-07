@@ -1,7 +1,8 @@
+
 const index = () => {
   return (
     <div>
-      Home Page
+      News
     </div>
   )
 }
