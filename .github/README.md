@@ -8,7 +8,7 @@ This GitHub Actions workflow is triggered whenever a pull request is created to 
 
 1. **Checkout code**: This step checks out the code from the pull request branch, allowing subsequent steps to access the application's source code.
 
-2. **Setup Node.js**: This step sets up Node.js on the runner and specifies the version to use (Node.js 14 in this example).
+2. **Setup Node.js**: This step sets up Node.js on the runner and specifies the version to use (Node.js 16 in this example).
 
 3. **Install dependencies**: This step installs the project dependencies using `npm ci`. It ensures a reproducible installation based on the `package-lock.json` or `yarn.lock` file in the repository.
 
