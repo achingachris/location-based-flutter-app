@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\SUpport\Facades\Auth;
+use App\Models\User;
+
+class UserController extends Controller
+{
+    // register user
+    public function register(Request $request)
+    {
+        // data validation
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        // create user
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ]);
+
+        // generate user token
+        $token = $user->createToken('auth_token')->plainText;
+
+        return response()->json(['token' => $token], 201);
+    }
+
+    // login user
+    public function login(Request $request)
+    {
+        // data validation
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // attempt to login user
+        if (!Auth::attempt($validatedData)) {
+            return response()->json(['message' => 'Invalid Credentials'], 401);
+        }
+
+        // get authenticated user
+        $user = User::where('email', $validatedData['email'])->first();
+
+        // generate user token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token], 200);
+    }
+
+    // user profile
+    public function profile(Request $request)
+    {
+        // get authenticated user
+        $user = $request->user();
+
+        return response()->json(['user' => $user], 200);
+    }
+}
