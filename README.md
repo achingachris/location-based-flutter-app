@@ -56,6 +56,52 @@ docker stop <container-id-or-name>
 
 Replace `<container-id-or-name>` with the actual ID or name of the running container.
 
+Sure! Here's a step-by-step guide on how to run a Dockerized Laravel application:
+
+**Prerequisites:**
+- Docker installed on your machine.
+
+**Step 1: Clone the Laravel Application**
+1. Open a terminal or command prompt.
+2. Clone the Laravel application repository to your local machine using the following command:
+   ```
+   git clone <repository_url>
+   ```
+   Replace `<repository_url>` with the actual URL of the Laravel application repository.
+
+**Step 2: Create Dockerfile**
+1. In the root directory of the Laravel application, create a file named `Dockerfile` (without any file extension).
+2. Open the `Dockerfile` with a text editor and copy the content provided in the previous response.
+
+**Step 3: Build the Docker Image**
+1. Open a terminal or command prompt.
+2. Navigate to the root directory of the Laravel application (where the `Dockerfile` is located).
+3. Run the following command to build the Docker image:
+   ```
+   docker build -t laravel-app .
+   ```
+   This command builds the Docker image using the `Dockerfile` and tags it as `laravel-app`. Make sure you include the `.` at the end of the command to specify the current directory as the build context.
+4. Wait for the build process to complete. It may take a few minutes depending on the size of the Laravel application and the speed of your internet connection.
+
+**Step 4: Run the Docker Container**
+1. After the Docker image is successfully built, run the following command to start a Docker container based on the image:
+   ```
+   docker run -d -p 8080:80 --name laravel-container laravel-app
+   ```
+   This command runs a container named `laravel-container` based on the `laravel-app` image. It maps port 8080 on the host to port 80 inside the container, allowing you to access the Laravel application at `http://localhost:8080`.
+2. Wait for the container to start. You can check the running containers using the command:
+   ```
+   docker ps
+   ```
+   The container named `laravel-container` should be listed with its status.
+
+**Step 5: Access the Laravel Application**
+1. Open a web browser and visit `http://localhost:8080`.
+2. You should see the Laravel application running inside the Docker container.
+
+Congratulations! You have successfully run a Dockerized Laravel application. You can now interact with the application through the browser. Any changes made to the source code will require rebuilding the Docker image and restarting the container to apply the changes.
+
+Note: If your Laravel application requires additional services like a database, you can include them in the Docker Compose file and modify the Dockerfile and Laravel configuration accordingly.
 
 ## GitHub Actions
 
