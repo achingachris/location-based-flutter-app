@@ -13,7 +13,7 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
   // console.log(guardian_news)
   // console.log(newsApiNews)
   // console.log(newsHeadlinesData)
-  console.log(newsHeadlines)
+  // console.log(newsHeadlines)
 
   return (
     <>
@@ -34,7 +34,7 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
             {/* Nested row for non-featured blog posts*/}
             <dic className='row'>
               {/* The Guardian */}
-              {/* {guardian_news.map((article, index) => (
+              {guardian_news.map((article, index) => (
                 <NewsCard
                   key={index}
                   title={article.webTitle}
@@ -42,10 +42,10 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
                   url={article.webUrl}
                   date={article.webPublicationDate}
                 />
-              ))} */}
+              ))}
 
               {/* NewsAPI */}
-              {/* {newsApiArticles.map((article, index) => (
+              {newsApiArticles.map((article, index) => (
                 <NewsCard
                   key={`newsapi-${index}`}
                   title={article.title}
@@ -53,7 +53,7 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
                   url={article.url}
                   date={article.publishedAt}
                 />
-              ))} */}
+              ))}
 
               {/* NewsAPI Headline */}
               {newsHeadlines.map((article, index) => (
