@@ -77,44 +77,107 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
 
 export default index
 
-// get data from the guardian API
 export const getServerSideProps = async () => {
-  // Get News from The Guardian API
-  const apiKey = process.env.THE_GUARDIAN_API_KEY;
-  const response = await fetch(
-    `https://content.guardianapis.com/search?api-key=${apiKey}`
-  );
-  const GuardianNews = await response.json();
+  try {
+    // Get News from The Guardian API
+    const apiKey = process.env.THE_GUARDIAN_API_KEY;
+    const response = await fetch(
+      `https://content.guardianapis.com/search?api-key=${apiKey}`
+    );
+    const GuardianNews = await response.json();
 
+    // Format The Guardian News date
+    const formattedGuardianNews = GuardianNews.response.results.map((article) => {
+      const formattedDate = new Date(article.webPublicationDate).toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      });
 
-  // Get news from newsapi
-  const newsApiKey = process.env.NEWS_API_KEY;
-  const newsApiResponse = await fetch(
-    `https://newsapi.org/v2/everything?q=apple`,
-    {
-      headers: {
-        'X-Api-Key': newsApiKey,
+      return {
+        ...article,
+        webPublicationDate: formattedDate,
+      };
+    });
+
+    // Get news from NewsAPI
+    const newsApiKey = process.env.NEWS_API_KEY;
+    const newsApiResponse = await fetch(
+      `https://newsapi.org/v2/everything?q=apple`,
+      {
+        headers: {
+          'X-Api-Key': newsApiKey,
+        },
+      }
+    );
+    const newsApiNews = await newsApiResponse.json();
+
+    // Format NewsAPI articles date
+    const formattedNewsApiArticles = newsApiNews.articles.map((article) => {
+      const formattedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      });
+
+      return {
+        ...article,
+        publishedAt: formattedDate,
+      };
+    });
+
+    // Get NewsAPI top headlines
+    const newsHeadlines = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=us`,
+      {
+        headers: {
+          'X-Api-Key': newsApiKey,
+        },
+      }
+    );
+    const newsHeadlinesData = await newsHeadlines.json();
+
+    // Format NewsAPI top headlines date
+    const formattedNewsHeadlines = newsHeadlinesData.articles.map((article) => {
+      const formattedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      });
+
+      return {
+        ...article,
+        publishedAt: formattedDate,
+      };
+    });
+
+    return {
+      props: {
+        GuardianNews: {
+          ...GuardianNews,
+          response: {
+            ...GuardianNews.response,
+            results: formattedGuardianNews,
+          },
+        },
+        newsApiNews: {
+          ...newsApiNews,
+          articles: formattedNewsApiArticles,
+        },
+        newsHeadlinesData: {
+          ...newsHeadlinesData,
+          articles: formattedNewsHeadlines,
+        },
       },
-    }
-  );
-  const newsApiNews = await newsApiResponse.json();
-
-  // top headlines from newsAPI
-  const newsHeadlines = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us`,
-    {
-      headers: {
-        'X-Api-Key': newsApiKey,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        GuardianNews: null,
+        newsApiNews: null,
+        newsHeadlinesData: null,
       },
-    }
-  );
-  const newsHeadlinesData = await newsHeadlines.json()
-
-  return {
-    props: {
-      GuardianNews,
-      newsApiNews,
-      newsHeadlinesData
-    },
-  };
+    };
+  }
 };
