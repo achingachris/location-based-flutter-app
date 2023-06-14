@@ -1,4 +1,46 @@
+import Link from "next/link"
+import { useState } from "react"
+import { useRouter } from "next/router"
+
 const register = () => {
+  const router = useRouter();
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: username,
+          email: email,
+          password: password,
+          password_confirmation: confirmPassword,
+        }),
+      });
+
+      if (response.ok) {
+        // Registration successful, redirect to profile page
+        router.push('/profile');
+      } else {
+        // Registration not successful, handle error
+        const data = await response.json();
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      setError('An error occurred during registration');
+    }
+  };
+
   return (
     <div className='container'>
       <div className='row'>
@@ -54,31 +96,22 @@ const register = () => {
                   <button
                     className='btn btn-lg btn-primary btn-login fw-bold text-uppercase'
                     type='submit'
+                    onSubmit={handleSubmit}
                   >
                     Register
                   </button>
                 </div>
-                <a className='d-block text-center mt-2 small' href='#'>
-                  Have an account? Sign In
-                </a>
                 <hr className='my-4' />
-                <div className='d-grid mb-2'>
-                  <button
-                    className='btn btn-lg btn-google btn-login fw-bold text-uppercase'
-                    type='submit'
-                  >
-                    <i className='fab fa-google me-2' /> Sign up with Google
-                  </button>
-                </div>
-                <div className='d-grid'>
-                  <button
-                    className='btn btn-lg btn-facebook btn-login fw-bold text-uppercase'
-                    type='submit'
-                  >
-                    <i className='fab fa-facebook-f me-2' /> Sign up with
-                    Facebook
-                  </button>
-                </div>
+                {/* {error && (
+                  <div className='alert alert-danger mt-3' role='alert'>
+                    {error}
+                  </div>
+                )} */}
+                <Link href='/account/login' legacyBehavior>
+                  <a className='d-block text-center mt-2 small'>
+                    Have an account? Sign In
+                  </a>
+                </Link>
               </form>
             </div>
           </div>
