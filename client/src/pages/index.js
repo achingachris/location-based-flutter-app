@@ -7,13 +7,7 @@ import SearchBar from '@/components/SearchBar'
 const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
   const guardian_news = GuardianNews?.response?.results || [];
   const newsApiArticles = newsApiNews?.articles || [];
-  const newsHeadlines = newsHeadlinesData?. articles || [];
-
-  // console.log(GuardianNews)
-  // console.log(guardian_news)
-  // console.log(newsApiNews)
-  // console.log(newsHeadlinesData)
-  // console.log(newsHeadlines)
+  const newsHeadlines = newsHeadlinesData?.articles || [];
 
   return (
     <>
@@ -32,7 +26,7 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
           {/* Blog entries*/}
           <div className='col-lg-8'>
             {/* Nested row for non-featured blog posts*/}
-            <dic className='row'>
+            <div className='row'>
               {/* The Guardian */}
               {guardian_news.map((article, index) => (
                 <NewsCard
@@ -65,7 +59,7 @@ const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
                   date={article.publishedAt}
                 />
               ))}
-            </dic>
+            </div>
           </div>
           {/* Side widgets*/}
           <div className='col-lg-4'>
