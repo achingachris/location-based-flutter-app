@@ -4,11 +4,16 @@ import InfoSideBar from '@/components/InfoSideBar'
 import NewsCard from '@/components/NewsCard'
 import SearchBar from '@/components/SearchBar'
 
-const index = ({ news }) => {
-  const guardian_news = news?.response?.results || [];
+const index = ({ GuardianNews, newsApiNews, newsHeadlinesData }) => {
+  const guardian_news = GuardianNews?.response?.results || [];
+  const newsApiArticles = newsApiNews?.articles || [];
+  const newsHeadlines = newsHeadlinesData?. articles || [];
 
-  console.log(news)
-  console.log(guardian_news)
+  // console.log(GuardianNews)
+  // console.log(guardian_news)
+  // console.log(newsApiNews)
+  // console.log(newsHeadlinesData)
+  console.log(newsHeadlines)
 
   return (
     <>
@@ -28,14 +33,36 @@ const index = ({ news }) => {
           <div className='col-lg-8'>
             {/* Nested row for non-featured blog posts*/}
             <dic className='row'>
-              {/* <NewsCard /> */}
-              {guardian_news.map((article, index) => (
+              {/* The Guardian */}
+              {/* {guardian_news.map((article, index) => (
                 <NewsCard
                   key={index}
                   title={article.webTitle}
                   description={article.fields?.bodyText}
                   url={article.webUrl}
                   date={article.webPublicationDate}
+                />
+              ))} */}
+
+              {/* NewsAPI */}
+              {/* {newsApiArticles.map((article, index) => (
+                <NewsCard
+                  key={`newsapi-${index}`}
+                  title={article.title}
+                  description={article.description}
+                  url={article.url}
+                  date={article.publishedAt}
+                />
+              ))} */}
+
+              {/* NewsAPI Headline */}
+              {newsHeadlines.map((article, index) => (
+                <NewsCard
+                  key={`newsapi-${index}`}
+                  title={article.title}
+                  description={article.description}
+                  url={article.url}
+                  date={article.publishedAt}
                 />
               ))}
             </dic>
@@ -58,23 +85,42 @@ export default index
 
 // get data from the guardian API
 export const getServerSideProps = async () => {
-  try {
-    const apiKey = process.env.THE_GUARDIAN_API_KEY;
-    const response = await fetch(
-      `https://content.guardianapis.com/search?api-key=${apiKey}`
-    );
-    const news = await response.json();
-    return {
-      props: {
-        news,
+  // Get News from The Guardian API
+  const apiKey = process.env.THE_GUARDIAN_API_KEY;
+  const response = await fetch(
+    `https://content.guardianapis.com/search?api-key=${apiKey}`
+  );
+  const GuardianNews = await response.json();
+
+
+  // Get news from newsapi
+  const newsApiKey = process.env.NEWS_API_KEY;
+  const newsApiResponse = await fetch(
+    `https://newsapi.org/v2/everything?q=apple`,
+    {
+      headers: {
+        'X-Api-Key': newsApiKey,
       },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        news: null,
+    }
+  );
+  const newsApiNews = await newsApiResponse.json();
+
+  // top headlines from newsAPI
+  const newsHeadlines = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=us`,
+    {
+      headers: {
+        'X-Api-Key': newsApiKey,
       },
-    };
-  }
+    }
+  );
+  const newsHeadlinesData = await newsHeadlines.json()
+
+  return {
+    props: {
+      GuardianNews,
+      newsApiNews,
+      newsHeadlinesData
+    },
+  };
 };
