@@ -16,3 +16,6 @@ Route::middleware('auth:sanctum')->get('/profile', [UserController::class, 'prof
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::put('/profile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');

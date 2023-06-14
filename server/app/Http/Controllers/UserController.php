@@ -72,4 +72,26 @@ class UserController extends Controller
             ]
         ], 200);
     }
+
+    // update profile
+    public function updateProfile(Request $request)
+    {
+        // validate data
+        $validatedData = $request->validate([
+            'location' => 'required|string',
+            'categories' => 'required|array',
+            'categories.*' => 'string',
+        ]);
+
+        // get suthenticated user
+        $user = $request->user();
+
+        // update user profile
+        $user->location = $validatedData['location'];
+        $user->categories = $validatedData['categories'];
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated successfully'], 200);
+
+    }
 }
