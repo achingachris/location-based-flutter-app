@@ -26,7 +26,7 @@ class UserController extends Controller
         ]);
 
         // generate user token
-        $token = $user->createToken('auth_token')->plainText;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token], 201);
     }
@@ -60,6 +60,16 @@ class UserController extends Controller
         // get authenticated user
         $user = $request->user();
 
-        return response()->json(['user' => $user], 200);
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'location' => $user->location,
+                'categories' => $user->categories,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ]
+        ], 200);
     }
 }
