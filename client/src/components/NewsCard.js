@@ -1,15 +1,16 @@
-const NewsCard = () => {
+import PropTypes from 'prop-types';
+
+const NewsCard = ({ title, description, url, date }) => {
   return (
     <div className='col-xl-6 col-md-6 mb-4'>
       <div className='card mb-4'>
         <div className='card-body'>
-          <div className='small text-muted'>January 1, 2023</div>
-          <h2 className='card-title h4'>Post Title</h2>
+          <div className='small text-muted'>{date}</div>
+          <h2 className='card-title h4'>{title}</h2>
           <p className='card-text'>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis
-            aliquid atque, nulla.
+            {description}
           </p>
-          <a className='btn btn-primary' href='#!'>
+          <a className='btn btn-primary' href={url}>
             Read more →
           </a>
         </div>
@@ -19,3 +20,18 @@ const NewsCard = () => {
 }
 
 export default NewsCard
+
+NewsCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+};
+
+NewsCard.defaultProps = {
+  title: 'News Title',
+  description: 'news description goes here',
+  url: '/',
+  date: '06-14-2023',
+};
+
