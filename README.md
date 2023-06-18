@@ -1,29 +1,97 @@
 # MyNews App
 
+>The newsapp is built by Laravel and React(Next.Js)
+
+## Running the Application
+
+Clone the repository to your local machine.
+
+```bash
+git clone https://github.com/achingachris/news_app.git
+```
+
+### Running Laravel
+
+Install the required dependencies by running the following command inside the [server](/server/) directory:
+   
+```bash
+   composer install
+```
+
+Create a copy of the `.env.example` file and rename it to `.env`. Update the necessary configuration values, such as the database credentials and API keys. Remeber to update your database settings:
+
+```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=laravel
+   DB_USERNAME=root
+   DB_PASSWORD=
+```
+
+Generate an application key by running the following command:
+
+```bash
+   php artisan key:generate
+```
+
+Migrate the database by running the following command:
+
+```bash
+   php artisan migrate
+```
+
+Start the Laravel development server by running the following command:
+
+```bash
+   php artisan serve
+```
+
+The server has two API endpoints:
+
+`/api/login`
+
+`/api/register`
+
+`/api/profile`
+
+![image1](/Screenshot%20(7).png)
+![image1](/Screenshot%20(8).png)
+
+
+### Running Next.Js
+
+To run the Next.js app, change the directory to `client`:
+
+1. Make sure you have Node.js and npm (Node Package Manager) installed on your machine.
+
+2. Clone the Next.js application repository to your local machine if you haven't already.
+
+3. Open a terminal or command prompt and navigate to the root directory of the Next.js app.
+
+4. Install the required dependencies by running the following command:
+   ```
+   npm install
+   ```
+
+5. After the dependencies are installed, start the Next.js development server by running the following command:
+   ```
+   npm run dev
+   ```
+
+6. Wait for the server to start, then access the Next.js app by visiting `http://localhost:3000` in your web browser.
+
+
 ## Running the Next.js App with Docker
 
 This guide explains how to run the Next.js app using Docker. Docker allows you to package the application and its dependencies into a container, providing a consistent and reproducible environment for running the app.
 
-### Prerequisites
-
-Before getting started, make sure you have the following prerequisites installed on your system:
-
-- Docker: [Install Docker](https://docs.docker.com/get-docker/)
-
-### Step 1: Clone the Repository
-
-Clone the repository containing the Next.js app to your local machine.
-
-```bash
-git clone <repository-url>
-```
-
-### Step 2: Build the Docker Image
+Build the Docker Image
 
 Navigate to the root directory of the cloned repository, where the `Dockerfile` is located.
 
 ```bash
-cd <repository-directory>
+cd client
 ```
 
 Build the Docker image using the following command:
@@ -32,7 +100,7 @@ Build the Docker image using the following command:
 docker build -t newsapp .
 ```
 
-### Step 3: Run the Docker Container
+ the Docker Container
 
 After the Docker image is built successfully, you can run the Docker container using the following command:
 
@@ -42,11 +110,11 @@ docker run -p 3000:3000 newsapp
 
 This command maps port 3000 from the container to port 3000 on the host, allowing you to access the Next.js app in your web browser at `http://localhost:3000`.
 
-### Step 4: Access the Next.js App
+Access the Next.js App
 
 Once the Docker container is running, you can access the Next.js app by opening your web browser and navigating to `http://localhost:3000`.
 
-### Stopping the Docker Container
+Stopping the Docker Container
 
 To stop the Docker container, you can use the `docker stop` command followed by the container ID or name.
 
